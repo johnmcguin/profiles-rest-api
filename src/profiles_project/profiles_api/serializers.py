@@ -34,3 +34,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+
+class ProfileFeedItemSerializer(serializers.ModelSerializer):
+    """Serializer for profile feed items."""
+
+    class Meta:
+        model = models.ProfileFeedItem
+        fields = ('id', 'user_profile', 'status_text', 'created_on')
+        # only want current logged in user to be able to add their own posts for that user
+        extra_kwargs = {'user_profile': {'read_only': True}}
